@@ -1,4 +1,4 @@
-// source: https://www.freecodecamp.org/news/tabs-in-jetpack-compose/
+// inspired from: https://www.freecodecamp.org/news/tabs-in-jetpack-compose/
 
 package me.jakir.tabviewdemo
 
@@ -6,6 +6,7 @@ import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -34,6 +35,9 @@ import androidx.compose.foundation.layout.WindowInsets
 import androidx.compose.foundation.layout.asPaddingValues
 import androidx.compose.foundation.layout.systemBars
 import androidx.compose.foundation.layout.padding
+import androidx.compose.material3.TabRow
+import androidx.compose.ui.Alignment
+import androidx.compose.ui.text.style.TextOverflow
 
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -43,6 +47,7 @@ class MainActivity : ComponentActivity() {
             TabViewDemoTheme {
                 Scaffold(modifier = Modifier.fillMaxSize()) { innerPadding ->
                     TabScreen()
+
                 }
             }
         }
@@ -101,6 +106,108 @@ fun TabScreen() {
             3 -> Greeting(name = "Private")
             4 -> Greeting(name = "Favorite")
             5 -> Greeting(name = "Review")
+        }
+    }
+}
+
+
+// If you want disable scroll, you can use TabRow.
+
+@Composable
+fun TabScreenWithoutScroll() {
+    var tabIndex by remember { mutableStateOf(0) }
+
+    val tabs = listOf("Home", "About", "Settings", "More", "Something")
+
+    Column(modifier = Modifier
+        .fillMaxWidth()
+        .padding(WindowInsets.systemBars.asPaddingValues())
+    ){
+        TabRow(selectedTabIndex = tabIndex) {
+            tabs.forEachIndexed { index, title ->
+                Tab(
+                    text = { Text(title, maxLines = 1, overflow = TextOverflow.Ellipsis) },
+                    selected = tabIndex == index,
+                    onClick = { tabIndex = index },
+                    icon = {
+                        when (index) {
+                            0 -> Icon(imageVector = Icons.Default.Home, contentDescription = null)
+                            1 -> Icon(imageVector = Icons.Default.Info, contentDescription = null)
+                            2 -> Icon(imageVector = Icons.Default.Settings, contentDescription = null)
+                            3 -> Icon(imageVector = Icons.Default.Lock, contentDescription = null)
+                            4 -> Icon(imageVector = Icons.Default.Favorite, contentDescription = null)
+
+                        }
+                    }
+                )
+            }
+        }
+        when (tabIndex) {
+            0 -> Greeting(name = "Home")
+            1 -> Greeting(name = "About")
+            2 -> Greeting(name = "Settings")
+            3 -> Greeting(name = "Private")
+            4 -> Greeting(name = "Favorite")
+        }
+    }
+}
+
+// You can show tabs in the bottom
+
+@Composable
+fun TabScreenBottom() {
+    var tabIndex by remember { mutableStateOf(0) }
+
+    val tabs = listOf("Home", "About", "Settings", "More", "Something", "Everything")
+
+    Box(modifier = Modifier
+        .fillMaxSize()
+        .padding(WindowInsets.systemBars.asPaddingValues())  // Adjust padding based on system bars
+    ) {
+        Column(modifier = Modifier
+            .fillMaxWidth()
+
+        ) {
+            when (tabIndex) {
+                0 -> Greeting(name = "Home")
+                1 -> Greeting(name = "About")
+                2 -> Greeting(name = "Settings")
+                3 -> Greeting(name = "Private")
+                4 -> Greeting(name = "Favorite")
+                5 -> Greeting(name = "Review")
+            }
+        }
+
+        // TabRow at the bottom of the screen
+        TabRow(
+            selectedTabIndex = tabIndex,
+            modifier = Modifier
+                .fillMaxWidth()
+                .align(Alignment.BottomCenter)  // Aligning TabRow to the bottom
+        ) {
+            tabs.forEachIndexed { index, title ->
+                Tab(
+                    text = {
+                        Text(
+                            title,
+                            maxLines = 1,
+                            overflow = TextOverflow.Ellipsis
+                        )
+                    },
+                    selected = tabIndex == index,
+                    onClick = { tabIndex = index },
+                    icon = {
+                        when (index) {
+                            0 -> Icon(imageVector = Icons.Default.Home, contentDescription = null)
+                            1 -> Icon(imageVector = Icons.Default.Info, contentDescription = null)
+                            2 -> Icon(imageVector = Icons.Default.Settings, contentDescription = null)
+                            3 -> Icon(imageVector = Icons.Default.Lock, contentDescription = null)
+                            4 -> Icon(imageVector = Icons.Default.Favorite, contentDescription = null)
+                            5 -> Icon(imageVector = Icons.Default.Star, contentDescription = null)
+                        }
+                    }
+                )
+            }
         }
     }
 }
