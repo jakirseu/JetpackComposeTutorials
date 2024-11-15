@@ -5,11 +5,11 @@ plugins {
 }
 
 android {
-    namespace = "me.jakir.imageload"
+    namespace = "me.jakir.conditionalviews"
     compileSdk = 35
 
     defaultConfig {
-        applicationId = "me.jakir.imageload"
+        applicationId = "me.jakir.conditionalviews"
         minSdk = 24
         targetSdk = 34
         versionCode = 1
@@ -40,9 +40,6 @@ android {
 }
 
 dependencies {
-
-    // Coil for image loading from URL
-    implementation("io.coil-kt:coil-compose:3.0.3")
 
     implementation(libs.androidx.core.ktx)
     implementation(libs.androidx.lifecycle.runtime.ktx)
